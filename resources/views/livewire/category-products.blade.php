@@ -1,29 +1,23 @@
-<div>
-    <div class="glider-contain">
-        <ul class="glider">
-            
-            @foreach ($category->products as $product)
-                <li class="bg-white rounded-lg shadow {{ $loop->last ? '' : 'mr-4' }}">
-                    <article>
-                        <figure>
-                            <img src="{{ Storage::url($product->images->first()->url) }}" alt="">
-                        </figure>
-                        <div class="py-4 px-6">
-                            <h1 class="text-lg font-semibold ">
-                                <a href="">
-                                    {{ $product->name }}
-                                </a>
-                            </h1>
-                            <p class="font-bold text-trueGray-700">USD ${{ $product->price }}</p>
-                        </div>
-                    </article>
-                </li>
-            @endforeach
+<div wire:init="loadProducts">
+    @if (count($products) > 0)
+        <div class="glider-contain">
+            <ul class="glider-{{ $category->id }}">
+                
+                @foreach ($category->products as $product)
+                    <x-product-card :product="$product"/>
+                @endforeach
 
-        </ul>
+            </ul>
 
-        <button aria-label="Previous" class="glider-prev">«</button>
-        <button aria-label="Next" class="glider-next">»</button>
-        <div role="tablist" class="dots"></div>
-    </div>
+            <button aria-label="Previous" class="glider-prev">«</button>
+            <button aria-label="Next" class="glider-next">»</button>
+            <div role="tablist" class="dots-{{ $category->id }}"></div>
+        </div>
+    @else
+        <div class="w-full bg-white rounded-md shadow-md">
+            <div class="flex justify-center items-center py-8">
+                <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+            </div>
+        </div>
+    @endif
 </div>
